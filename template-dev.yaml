@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: example-ws-api-gateway
+
+Resources:
+  SubmitLongRunningProcessFunction:
+    Type: AWS::Serverless::Function
+    Description: "Submits a long running process for event based processing."
+    Properties:
+      CodeUri: ./
+      Role: <Put ARN for your Lamnbda Role Here>
+      Handler: submit-long-running-process.handler
+      MemorySize: 256
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          LONG_RUNNING_PROCESS_SNS_TOPIC: !Ref longRunningProcessSnsTopic
+
+  PushResponseFunction:
+    Type: AWS::Serverless::Function
+    Description: "Push to client the results of the long running process asynchronously"
+    Properties:
+      CodeUri: ./
+      Role: <Put ARN for your Lamnbda Role Here>
+      Handler: push-result.handler
+      MemorySize: 256
+      Runtime: nodejs8.10
+      Events:
+        DealSavedSnsTopic:
+          Type: SNS
+          Properties:
+            Topic: !Ref longRunningProcessSnsTopic
+
+  longRunningProcessSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: "example-long-running-proc-topic"
+
+Outputs:
+  SubmitLongRunningProcessFunctionArn:
+    Description: "Submit Long Running Function ARN"
+    Value: !GetAtt SubmitLongRunningProcessFunction.Arn
+  PushResponseFunctionArn:
+    Description: "Push Response Function ARN."
+    Value: !GetAtt PushResponseFunction.Arn
