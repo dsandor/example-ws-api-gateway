@@ -2,3 +2,5 @@
 node_modules/
 .aws
 *.log
+create-api-and-routes.txt
+packaged.yaml

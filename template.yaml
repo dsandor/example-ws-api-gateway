@@ -9,6 +9,9 @@ Resources:
     Properties:
       CodeUri: ./
       Handler: submit-long-running-process.handler
+      Policies:
+        - AmazonSNSFullAccess
+        - AWSLambdaExecute
       MemorySize: 256
       Runtime: nodejs8.10
       Environment:
@@ -21,6 +24,9 @@ Resources:
     Properties:
       CodeUri: ./
       Handler: push-result.handler
+      Policies:
+        - AWSLambdaExecute
+        - AmazonAPIGatewayInvokeFullAccess
       MemorySize: 256
       Runtime: nodejs8.10
       Events:

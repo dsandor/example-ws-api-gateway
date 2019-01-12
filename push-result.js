@@ -3,7 +3,10 @@ const AWS = require('aws-sdk');
 module.exports.handler = async (event) => {
   console.log('push response event:', event);
 
-  const message = JSON.parse(event.Records[0].Sns.Message);
+  const message = {
+    ...JSON.parse(event.Records[0].Sns.Message),
+    dataPushedToSocket: 'this property was added in the push lambda'
+  };
 
   console.log('message:', message);
 
