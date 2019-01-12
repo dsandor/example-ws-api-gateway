@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: example-ws-api-gateway
+Outputs:
+  PushResponseFunctionArn:
+    Description: Push Response Function ARN.
+    Value:
+      Fn::GetAtt:
+      - PushResponseFunction
+      - Arn
+  SubmitLongRunningProcessFunctionArn:
+    Description: Submit Long Running Function ARN
+    Value:
+      Fn::GetAtt:
+      - SubmitLongRunningProcessFunction
+      - Arn
+Resources:
+  PushResponseFunction:
+    Description: Push to client the results of the long running process asynchronously
+    Properties:
+      CodeUri: s3://dsandor-blog-examples/ece2c639a3e2e54426ea1a74f2d63a24
+      Events:
+        DealSavedSnsTopic:
+          Properties:
+            Topic:
+              Ref: longRunningProcessSnsTopic
+          Type: SNS
+      Handler: push-result.handler
+      MemorySize: 256
+      Runtime: nodejs8.10
+    Type: AWS::Serverless::Function
+  SubmitLongRunningProcessFunction:
+    Description: Submits a long running process for event based processing.
+    Properties:
+      CodeUri: s3://dsandor-blog-examples/ece2c639a3e2e54426ea1a74f2d63a24
+      Environment:
+        Variables:
+          LONG_RUNNING_PROCESS_SNS_TOPIC:
+            Ref: longRunningProcessSnsTopic
+      Handler: submit-long-running-process.handler
+      MemorySize: 256
+      Runtime: nodejs8.10
+    Type: AWS::Serverless::Function
+  longRunningProcessSnsTopic:
+    Properties:
+      DisplayName: example-long-running-proc-topic
+    Type: AWS::SNS::Topic
+Transform: AWS::Serverless-2016-10-31
