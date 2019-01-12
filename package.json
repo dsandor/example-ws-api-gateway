@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest test --coverage",
     "package": "sam package --template-file template.yaml --s3-bucket dsandor-blog-examples --output-template-file packaged.yaml",
-    "deploy": "BUILD_S3_BUCKET=dsandor-blog-examples NODE_ENV=dev npm run package && sam deploy --template-file ./packaged.yaml --stack-name ws-test-example --capabilities CAPABILITY_IAM",
+    "deploy": "BUILD_S3_BUCKET=dsandor-blog-examples NODE_ENV=dev npm run package && sam deploy --template-file ./packaged.yaml --stack-name ws-test-example --capabilities CAPABILITY_IAM"
   },
   "dependencies": {
     "aws-sdk": "^2.384.0",

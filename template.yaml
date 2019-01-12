@@ -8,7 +8,6 @@ Resources:
     Description: "Submits a long running process for event based processing."
     Properties:
       CodeUri: ./
-      Role: <Put ARN for your Lamnbda Role Here>
       Handler: submit-long-running-process.handler
       MemorySize: 256
       Runtime: nodejs8.10
@@ -21,7 +20,6 @@ Resources:
     Description: "Push to client the results of the long running process asynchronously"
     Properties:
       CodeUri: ./
-      Role: <Put ARN for your Lamnbda Role Here>
       Handler: push-result.handler
       MemorySize: 256
       Runtime: nodejs8.10
